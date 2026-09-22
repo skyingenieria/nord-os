@@ -323,7 +323,22 @@ export type Database = {
         Row: { cost: number; id: string; price: number; price_list_id: string; variant_id: string }
         Insert: { cost: number; id?: string; price: number; price_list_id: string; variant_id: string }
         Update: { cost?: number; id?: string; price?: number; price_list_id?: string; variant_id?: string }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "price_list_items_price_list_id_fkey"
+            columns: ["price_list_id"]
+            isOneToOne: false
+            referencedRelation: "price_lists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "price_list_items_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       price_lists: {
         Row: {

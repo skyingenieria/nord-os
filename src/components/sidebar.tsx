@@ -6,13 +6,13 @@ import { signOut } from "@/app/login/actions";
 import { ACTIVE_SCHOOL_COOKIE, type School } from "@/lib/school-constants";
 
 // Módulos del admin. Se van habilitando (ready:true) por módulo.
+// La venta rápida NO es un módulo del admin: vive aparte (link al pie).
 const MODULES = [
   { label: "Dashboard", href: "/admin", ready: true },
   { label: "Productos", href: "/admin/productos", ready: true },
-  { label: "Venta rápida", href: "/rapido", ready: true },
-  { label: "Pedidos", href: "/admin/pedidos", ready: false },
-  { label: "Stock", href: "/admin/stock", ready: false },
-  { label: "Listas de precio", href: "/admin/precios", ready: false },
+  { label: "Listas de precio", href: "/admin/precios", ready: true },
+  { label: "Stock", href: "/admin/stock", ready: true },
+  { label: "Ventas", href: "/admin/ventas", ready: false },
   { label: "Clientes", href: "/admin/clientes", ready: false },
   { label: "Proveedores", href: "/admin/proveedores", ready: false },
   { label: "Caja / Gastos", href: "/admin/caja", ready: false },
@@ -103,6 +103,16 @@ export function Sidebar({
           );
         })}
       </nav>
+
+      {/* Venta rápida: acceso aparte, no es un módulo del admin */}
+      <div className="px-2 pb-2">
+        <Link
+          href="/rapido"
+          className="flex items-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 px-3 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        >
+          <span aria-hidden>⚡</span> Venta rápida
+        </Link>
+      </div>
 
       <div className="px-4 py-3 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
         <p className="text-xs text-neutral-500 truncate">

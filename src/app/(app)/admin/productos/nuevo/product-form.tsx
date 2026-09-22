@@ -29,23 +29,32 @@ export function ProductForm() {
           <label htmlFor="category" className="text-sm font-medium">
             Categoría
           </label>
-          <input
+          <select
             id="category"
             name="category"
-            placeholder="Remeras"
+            defaultValue=""
             className="w-full rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 py-2 text-sm"
-          />
+          >
+            <option value="">—</option>
+            <option value="Formal">Formal</option>
+            <option value="Deportivo">Deportivo</option>
+          </select>
         </div>
         <div className="space-y-1">
           <label htmlFor="gender" className="text-sm font-medium">
             Género
           </label>
-          <input
+          <select
             id="gender"
             name="gender"
-            placeholder="Unisex"
+            defaultValue=""
             className="w-full rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 py-2 text-sm"
-          />
+          >
+            <option value="">—</option>
+            <option value="Varon">Varón</option>
+            <option value="Mujer">Mujer</option>
+            <option value="Unisex">Unisex</option>
+          </select>
         </div>
       </div>
 
