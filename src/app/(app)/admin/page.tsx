@@ -1,12 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
-
 export default async function AdminDashboard() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   return (
     <div className="px-6 py-8 max-w-5xl">
       <header className="mb-8">
@@ -15,13 +7,6 @@ export default async function AdminDashboard() {
           Panel de administración de nord-os.
         </p>
       </header>
-
-      {!user && (
-        <div className="mb-8 rounded-xl border border-amber-300/50 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
-          No hay sesión iniciada. La autenticación es el próximo módulo; hasta
-          entonces las tablas protegidas por RLS se ven vacías.
-        </div>
-      )}
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[

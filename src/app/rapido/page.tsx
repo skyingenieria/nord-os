@@ -1,7 +1,15 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 
 // Vista mobile ultra-liviana: venta rápida + cobro. Placeholder de la etapa 4.
-export default function RapidoPage() {
+export default async function RapidoPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
   return (
     <main className="flex-1 flex flex-col max-w-md mx-auto w-full px-4 py-6">
       <header className="flex items-center justify-between mb-6">

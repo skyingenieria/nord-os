@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Tables } from "@/types/database";
+import { signOut } from "@/app/login/actions";
 
 type School = Pick<Tables<"schools">, "id" | "name" | "slug" | "organization_id">;
 
@@ -96,8 +97,18 @@ export function Sidebar({
         })}
       </nav>
 
-      <div className="px-4 py-3 border-t border-neutral-200 dark:border-neutral-800 text-xs text-neutral-500 truncate">
-        {userEmail ?? "Sin sesión"}
+      <div className="px-4 py-3 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
+        <p className="text-xs text-neutral-500 truncate">
+          {userEmail ?? "Sin sesión"}
+        </p>
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="w-full rounded-lg border border-neutral-200 dark:border-neutral-700 px-3 py-1.5 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          >
+            Cerrar sesión
+          </button>
+        </form>
       </div>
     </aside>
   );

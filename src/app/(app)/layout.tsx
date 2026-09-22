@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/sidebar";
 import { createClient } from "@/lib/supabase/server";
 
@@ -12,6 +13,9 @@ export default async function AdminLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Ruta protegida: sin sesión, al login.
+  if (!user) redirect("/login");
 
   // Con RLS, esto devuelve solo los colegios de las organizaciones del usuario.
   // Sin sesión válida, devuelve vacío.
