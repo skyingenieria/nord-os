@@ -12,7 +12,7 @@ const MODULES = [
   { label: "Productos", href: "/admin/productos", ready: true },
   { label: "Listas de precio", href: "/admin/precios", ready: true },
   { label: "Stock", href: "/admin/stock", ready: true },
-  { label: "Ventas", href: "/admin/ventas", ready: false },
+  { label: "Ventas", href: "/admin/ventas", ready: true },
   { label: "Clientes", href: "/admin/clientes", ready: false },
   { label: "Proveedores", href: "/admin/proveedores", ready: false },
   { label: "Caja / Gastos", href: "/admin/caja", ready: false },
