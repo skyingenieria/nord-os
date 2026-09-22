@@ -14,11 +14,19 @@ export default async function NuevaVersionPage() {
   }
 
   const supabase = await createClient();
-  const { data: sources } = await supabase
-    .from("price_lists")
-    .select("id, version_code, effective_date")
-    .eq("school_id", school.id)
-    .order("effective_date", { ascending: false });
+  const [{ data: sources }, { data: products }] = await Promise.all([
+    supabase
+      .from("price_lists")
+      .select("id, version_code, effective_date")
+      .eq("school_id", school.id)
+      .eq("status", "active")
+      .order("effective_date", { ascending: false }),
+    supabase
+      .from("products")
+      .select("id, name")
+      .eq("school_id", school.id)
+      .order("name"),
+  ]);
 
   return (
     <div className="px-6 py-8 max-w-4xl">
@@ -28,17 +36,17 @@ export default async function NuevaVersionPage() {
         </Link>
         <h1 className="text-2xl font-semibold mt-2">Asistente de aumento</h1>
         <p className="text-sm text-neutral-500 mt-1">
-          Genera una versión nueva en {school.name} a partir de una existente,
-          aplicando un % a costo y a precio. La versión anterior queda intacta
-          (precio histórico).
+          Genera un <strong>borrador</strong> en {school.name} a partir de una
+          versión existente. Elegí a qué prendas aplicar el aumento; después
+          podés ajustar precios ítem por ítem y recién ahí finalizar.
         </p>
       </div>
 
       {sources && sources.length > 0 ? (
-        <VersionForm sources={sources} />
+        <VersionForm sources={sources} products={products ?? []} />
       ) : (
         <p className="text-sm text-neutral-500">
-          Todavía no hay ninguna lista base para este colegio.
+          Todavía no hay ninguna lista base activa para este colegio.
         </p>
       )}
     </div>

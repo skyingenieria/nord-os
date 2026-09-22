@@ -348,6 +348,7 @@ export type Database = {
           id: string
           note: string | null
           school_id: string
+          status: Database["public"]["Enums"]["price_list_status"]
           version_code: string
         }
         Insert: {
@@ -357,6 +358,7 @@ export type Database = {
           id?: string
           note?: string | null
           school_id: string
+          status?: Database["public"]["Enums"]["price_list_status"]
           version_code: string
         }
         Update: {
@@ -366,6 +368,7 @@ export type Database = {
           id?: string
           note?: string | null
           school_id?: string
+          status?: Database["public"]["Enums"]["price_list_status"]
           version_code?: string
         }
         Relationships: []
@@ -593,6 +596,7 @@ export type Database = {
       movement_type: "ingreso" | "venta" | "devolucion" | "ajuste"
       order_payment_status: "impago" | "parcial" | "pagado"
       order_status: "pendiente" | "armado" | "entregado" | "devuelto"
+      price_list_status: "draft" | "active"
       stock_ownership: "propio" | "consignacion"
       supplier_payment_kind: "a_cuenta" | "liquidacion"
     }

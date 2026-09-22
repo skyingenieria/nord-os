@@ -98,6 +98,55 @@ export async function createVariant(
   return { error: null };
 }
 
+export async function updateProduct(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const id = String(formData.get("id") ?? "");
+  const name = String(formData.get("name") ?? "").trim();
+  if (!id) return { error: "Falta el id." };
+  if (!name) return { error: "El nombre es obligatorio." };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("products")
+    .update({
+      name,
+      category: str(formData.get("category")),
+      gender: str(formData.get("gender")),
+      description: str(formData.get("description")),
+    })
+    .eq("id", id);
+
+  if (error) {
+    if (error.code === "23505")
+      return { error: "Ya existe una prenda con ese nombre en este colegio." };
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/productos");
+  revalidatePath(`/admin/productos/${id}`);
+  return { error: null };
+}
+
+export async function deleteProduct(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const supabase = await createClient();
+  await supabase.from("products").delete().eq("id", id);
+  revalidatePath("/admin/productos");
+  redirect("/admin/productos");
+}
+
+export async function deleteVariant(formData: FormData) {
+  const variantId = String(formData.get("variant_id") ?? "");
+  const productId = String(formData.get("product_id") ?? "");
+  if (!variantId) return;
+  const supabase = await createClient();
+  await supabase.from("product_variants").delete().eq("id", variantId);
+  revalidatePath(`/admin/productos/${productId}`);
+}
+
 export async function toggleProductActive(formData: FormData) {
   const productId = String(formData.get("product_id") ?? "");
   const active = String(formData.get("active") ?? "") === "true";

@@ -15,7 +15,7 @@ export default async function PreciosPage() {
   const supabase = await createClient();
   const { data: lists } = await supabase
     .from("price_lists")
-    .select("id, version_code, effective_date, note, price_list_items(count)")
+    .select("id, version_code, effective_date, note, status, price_list_items(count)")
     .eq("school_id", school.id)
     .order("effective_date", { ascending: false });
 
@@ -75,6 +75,11 @@ export default async function PreciosPage() {
                       >
                         {l.version_code}
                       </Link>
+                      {l.status === "draft" && (
+                        <span className="ml-2 rounded-full bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 text-[10px] uppercase tracking-wide">
+                          borrador
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-2.5 text-neutral-500 tabular-nums">
                       {l.effective_date}
