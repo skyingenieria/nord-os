@@ -1,20 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { Tables } from "@/types/database";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/app/login/actions";
+import { ACTIVE_SCHOOL_COOKIE, type School } from "@/lib/school-constants";
 
-type School = Pick<Tables<"schools">, "id" | "name" | "slug" | "organization_id">;
-
-// Módulos del admin. Solo "Dashboard" está implementado; el resto se habilita
-// por módulo en la etapa 4.
+// Módulos del admin. Se van habilitando (ready:true) por módulo.
 const MODULES = [
   { label: "Dashboard", href: "/admin", ready: true },
+  { label: "Productos", href: "/admin/productos", ready: true },
   { label: "Venta rápida", href: "/rapido", ready: true },
   { label: "Pedidos", href: "/admin/pedidos", ready: false },
   { label: "Stock", href: "/admin/stock", ready: false },
-  { label: "Productos", href: "/admin/productos", ready: false },
   { label: "Listas de precio", href: "/admin/precios", ready: false },
   { label: "Clientes", href: "/admin/clientes", ready: false },
   { label: "Proveedores", href: "/admin/proveedores", ready: false },
@@ -23,12 +20,21 @@ const MODULES = [
 
 export function Sidebar({
   schools,
+  activeSchoolId,
   userEmail,
 }: {
   schools: School[];
+  activeSchoolId: string | null;
   userEmail: string | null;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  function onSchoolChange(id: string) {
+    // Cookie leída por el server para saber el colegio activo.
+    document.cookie = `${ACTIVE_SCHOOL_COOKIE}=${id}; path=/; max-age=31536000; samesite=lax`;
+    router.refresh();
+  }
 
   return (
     <aside className="w-64 shrink-0 border-r border-neutral-200 dark:border-neutral-800 flex flex-col h-dvh sticky top-0">
@@ -46,7 +52,8 @@ export function Sidebar({
         {schools.length > 0 ? (
           <select
             className="mt-1 w-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-transparent px-2 py-1.5 text-sm"
-            defaultValue={schools[0]?.id}
+            value={activeSchoolId ?? schools[0]?.id}
+            onChange={(e) => onSchoolChange(e.target.value)}
           >
             {schools.map((s) => (
               <option key={s.id} value={s.id}>
@@ -56,7 +63,7 @@ export function Sidebar({
           </select>
         ) : (
           <p className="mt-1 text-xs text-neutral-500">
-            Sin colegios visibles. Iniciá sesión para ver tus datos.
+            Sin colegios visibles.
           </p>
         )}
       </div>

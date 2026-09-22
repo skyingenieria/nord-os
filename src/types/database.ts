@@ -359,7 +359,22 @@ export type Database = {
         Row: { active: boolean; created_at: string; id: string; product_id: string; size_id: string; sku: string | null }
         Insert: { active?: boolean; created_at?: string; id?: string; product_id: string; size_id: string; sku?: string | null }
         Update: { active?: boolean; created_at?: string; id?: string; product_id?: string; size_id?: string; sku?: string | null }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_variants_size_id_fkey"
+            columns: ["size_id"]
+            isOneToOne: false
+            referencedRelation: "sizes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
